@@ -1,0 +1,37 @@
+{{ define "header" }}<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Micro UI</title>
+    <link rel="stylesheet" href="template/static/bootstrap.min.css">
+    <style>
+        .page {
+            width: 90%;
+            margin: 20px auto;
+        }
+
+        .custom-modal {
+            width: 80%;
+        }
+
+        .pager form {
+            display: inline-block;
+        }
+
+        .pager-limit {
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="page">
+    {{ template "nav" . }}
+
+    {{ template "pagination" . }}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ title .CurrentEndpoint }}</h3>
+        </div>
+        <div class="panel-body">
+{{ end }}

@@ -1,0 +1,20 @@
+{{ define "nav" }}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Services</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {{ $current := .CurrentEndpoint }}
+                {{ range $name, $_ := .Endpoints }}
+                <li{{ if eq $name $current }} class="active"{{ end }}>
+                    <a href="/{{ $name }}">{{ title $name }}</a>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </div>
+</nav>
+{{ end }}

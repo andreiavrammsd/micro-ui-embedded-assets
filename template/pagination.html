@@ -1,0 +1,12 @@
+{{ define "pagination" }}
+<ul class="pager">
+    <li class="previous{{ if eq .Pagination.Prev "" }} disabled {{ end }}"><a {{ if not (eq .Pagination.Prev "") }} href="{{ .Pagination.Prev }}" {{ end }} >Previous</a></li>
+    <li>
+        <form>
+            <input type="number" name="limit" value="{{ .Pagination.Limit }}" class="form-control pager-limit">
+            <input type="hidden" name="offset" value="{{ .Pagination.Offset }}">
+        </form>
+    </li>
+    <li class="next"><a href="{{ .Pagination.Next }}">Next</a></li>
+</ul>
+{{ end }}
