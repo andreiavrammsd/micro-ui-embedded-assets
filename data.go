@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Data for template
 type Data struct {
 	Items           []interface{}
 	Endpoints       map[string]string
@@ -14,6 +15,7 @@ type Data struct {
 	Pagination      *Pagination
 }
 
+// Pagination params
 type Pagination struct {
 	Offset string
 	Limit  string

@@ -6,10 +6,12 @@ import (
 	"net/http"
 )
 
-const defaultAddr = ":1234"
-const maxLimit = 100
-const defaultLimit = 50
-const timeFormat = "2006-01-02 15:04:05"
+const (
+	defaultAddr  = ":1234"
+	maxLimit     = 100
+	defaultLimit = 50
+	timeFormat   = "2006-01-02 15:04:05"
+)
 
 var endpoints map[string]string
 
@@ -26,7 +28,7 @@ func main() {
 
 	addr := flag.String("addr", defaultAddr, "-addr host:port")
 	flag.Parse()
-	http.HandleFunc("/", MainHandler)
+	http.HandleFunc("/", DefaultHandler)
 	http.HandleFunc("/favicon.ico", FaviconHandler)
 	http.HandleFunc("/template/static/", StaticHandler)
 	log.Printf("Listening on %s", *addr)

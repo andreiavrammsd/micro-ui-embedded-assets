@@ -13,9 +13,9 @@ func TestGetLimit(t *testing.T) {
 }
 
 func TestGetPaginationUrl(t *testing.T) {
-	assert.Equal(t, "?limit=100&offset=100", getPaginationUrl("0", "100", "next"))
-	assert.Equal(t, "?limit=100&offset=100", getPaginationUrl("200", "100", "prev"))
-	assert.Equal(t, "", getPaginationUrl("0", "100", "prev"))
+	assert.Equal(t, "?limit=100&offset=100", getPaginationURL("0", "100", "next"))
+	assert.Equal(t, "?limit=100&offset=100", getPaginationURL("200", "100", "prev"))
+	assert.Equal(t, "", getPaginationURL("0", "100", "prev"))
 }
 
 func TestGetIntValue(t *testing.T) {

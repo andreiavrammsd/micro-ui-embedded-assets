@@ -8,16 +8,18 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"path/filepath"
 	"strconv"
 	"strings"
-	"path/filepath"
 )
 
-func MainHandler(w http.ResponseWriter, r *http.Request) {
+// DefaultHandler receives the path to manage, performs the request to the required endpoint,
+// and renders the result
+func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	path := strings.Trim(r.URL.Path, "/")
 
 	endpoint, exists := endpoints[path]
-	if exists == false {
+	if !exists {
 		HomeHandler(w, r)
 		return
 	}
@@ -35,7 +37,9 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := http.Get(u.String())
 	checkError(err)
-	defer resp.Body.Close()
+	defer func() {
+		checkError(resp.Body.Close())
+	}()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	checkError(err)
@@ -50,12 +54,12 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	data.Pagination = &Pagination{
 		Offset: offset,
 		Limit:  limit,
-		Prev:   getPaginationUrl(offset, limit, "prev"),
-		Next:   getPaginationUrl(offset, limit, "next"),
+		Prev:   getPaginationURL(offset, limit, "prev"),
+		Next:   getPaginationURL(offset, limit, "next"),
 	}
 
 	templateStringPosition := strings.LastIndex(path, ":") + 1
-	templatePath := path[templateStringPosition:len(path)]
+	templatePath := path[templateStringPosition:]
 	assets := []string{
 		fmt.Sprintf("template/%s.html", templatePath),
 		"template/footer.html",
@@ -69,9 +73,12 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.New(path + ".html").Funcs(getFuncMap()).Parse(string(content))
 	checkError(err)
 
-	t.Execute(w, data)
+	if err := t.Execute(w, data); err != nil {
+		log.Println(err)
+	}
 }
 
+// HomeHandler renders the main page
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	assets := []string{
 		"template/home.html",
@@ -86,24 +93,31 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	data := &Data{
 		Endpoints: endpoints,
 	}
-	t.Execute(w, data)
+
+	if err := t.Execute(w, data); err != nil {
+		log.Println(err)
+	}
 }
 
+// FaviconHandler manages the browser's request for the favicon
 func FaviconHandler(w http.ResponseWriter, r *http.Request) {
 }
 
+// StaticHandler serves CSS and JS files
 func StaticHandler(w http.ResponseWriter, r *http.Request) {
 	path := strings.Trim(r.URL.Path, "/")
 	ext := filepath.Ext(path)
-	
+
 	content, err := getAssetsContent([]string{path})
 	checkError(err)
-	
+
 	contentTypes := map[string]string{
 		"css": "text/css",
-		"js": "text/javascript",
+		"js":  "text/javascript",
 	}
-	
+
 	w.Header().Set("Content-Type", contentTypes[ext])
-	w.Write(content)
+	if _, err := w.Write(content); err != nil {
+		log.Println(err)
+	}
 }

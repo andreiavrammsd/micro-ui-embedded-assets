@@ -16,7 +16,7 @@ func getLimit(limit string) int {
 	return l
 }
 
-func getPaginationUrl(offset, limit, dir string) string {
+func getPaginationURL(offset, limit, dir string) string {
 	o := getIntValue(offset)
 	l := getIntValue(limit)
 
@@ -56,7 +56,7 @@ func getIntValue(text string) int {
 }
 
 func getAssetsContent(assets []string) ([]byte, error) {
-	content := []byte{}
+	var content []byte
 	for _, file := range assets {
 		c, err := Asset(file)
 		if err != nil {
