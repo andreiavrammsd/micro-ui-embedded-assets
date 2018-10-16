@@ -106,7 +106,7 @@ func FaviconHandler(w http.ResponseWriter, r *http.Request) {
 // StaticHandler serves CSS and JS files
 func StaticHandler(w http.ResponseWriter, r *http.Request) {
 	path := strings.Trim(r.URL.Path, "/")
-	ext := filepath.Ext(path)
+	ext := strings.TrimPrefix(filepath.Ext(path), ".")
 
 	content, err := getAssetsContent([]string{path})
 	checkError(err)
