@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/stretchr/testify/assert"
 	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetLimit(t *testing.T) {

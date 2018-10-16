@@ -13,8 +13,8 @@ import (
 	"strings"
 )
 
-// DefaultHandler receives the path to manage, performs the request to the required endpoint,
-// and renders the result
+// DefaultHandler receives the path to manage, performs the request
+// to the required endpoint, and renders the result
 func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	path := strings.Trim(r.URL.Path, "/")
 
@@ -70,7 +70,9 @@ func DefaultHandler(w http.ResponseWriter, r *http.Request) {
 	content, err := getAssetsContent(assets)
 	checkError(err)
 
-	t, err := template.New(path + ".html").Funcs(getFuncMap()).Parse(string(content))
+	t, err := template.New(path + ".html").
+		Funcs(getFuncMap()).
+		Parse(string(content))
 	checkError(err)
 
 	if err := t.Execute(w, data); err != nil {
@@ -87,7 +89,9 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	content, err := getAssetsContent(assets)
 	checkError(err)
 
-	t, err := template.New("home.html").Funcs(getFuncMap()).Parse(string(content))
+	t, err := template.New("home.html").
+		Funcs(getFuncMap()).
+		Parse(string(content))
 	checkError(err)
 
 	data := &Data{

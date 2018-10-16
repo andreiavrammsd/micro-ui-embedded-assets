@@ -53,5 +53,10 @@ func add(args ...interface{}) float64 {
 }
 
 func title(arg string) string {
-	return strings.Replace(strings.Title(strings.Replace(arg, "-", " ", -1)), ":", " ", -1)
+	return strings.Replace(
+		strings.Title(strings.Replace(arg, "-", " ", -1)),
+		":",
+		" ",
+		-1,
+	)
 }
